@@ -52,10 +52,23 @@ for (const fileName of fileNames) {
   await ensureDir(
     `out/${format(dateObj, "yyyy")}/${format(dateObj, "yyyy-MM")}`,
   );
-  let content = body;
-  if (body.indexOf("What-am-I-grateful-for:") == -1){
-    content = title +"\n" + body;
+
+  let content = (body)
+
+  if (body.indexOf("What-am-I-grateful-for:") == -1 && body.indexOf("What-I-could-do-better:") == -1) {
+    const diaryTitle = title.split(".").splice(0, 1)
+
+    content = `---\ntitle: ${diaryTitle}\n---\n${title}${content}`
   } 
+  const frontMatter = content.replace(/(---.*---)(.*)/gsm, "$1")
+  content = content
+  .replace(/(---.*---)(.*)/gsm, "$2") //remove frontmatter
+  .replace(/\.\.\./g, "…") //replace ellipsis
+  .replace(/(\n)\*(\ )/g, "$1-$2") // join broken lines
+  .replace(/([^\.\n\{])\n([^\.])/g, "$1 $2") // join broken lines
+  .replace(/\s?\.\ {0,2}(?![\r\n])/g, ".\n") // split sentences to new lines
+
+
   console.log(
     `Write to out/${format(dateObj, "yyyy")}/${
       format(dateObj, "yyyy-MM")
@@ -63,7 +76,7 @@ for (const fileName of fileNames) {
   );
   Deno.writeTextFileSync(
     `out/${format(dateObj, "yyyy")}/${format(dateObj, "yyyy-MM")}/${date}.md`,
-    content,
+    frontMatter+content,
   );
 
 }
