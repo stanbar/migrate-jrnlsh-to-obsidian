@@ -4,9 +4,9 @@
 
 ### Node interp
 
-We use node interop and pnpm for `replace-in-file` package, which facilitate the process of replacing @tags with [[obsidian links]].
+We use [Deno](https://deno.land/) with node interop and [pnpm](https://pnpm.io/) for [replace-in-file](https://www.npmjs.com/package/replace-in-file) package, which facilitate the process of replacing @tags with [[obsidian links]].
 
-1. `npnm install`
+1. Run `npnm install` to download the package into `node_modules`.
 
 ### Create personal tags dictionary
 
